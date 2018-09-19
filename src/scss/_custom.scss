@@ -1,0 +1,126 @@
+// Custom styles for this template
+
+.aside-menu {
+  .nav-tabs .nav-link,
+  .callout {
+    border-radius: 0;
+  }
+}
+
+.sidebar {
+  .sidebar-nav, ul.nav {
+    width: $sidebar-width - 16px;
+  }
+}
+
+.modal .modal-dialog {
+  max-width: 90% !important;
+  margin: 30px auto;
+}
+.modal {
+  top: 44px;
+  .close{
+    font-weight: 300;
+    color: #fff;
+  }
+  .modal-dialog {
+    .modal-content{
+      border-radius: 0px;
+    }
+    .modal-header{
+      background-color: $blue;
+      color: #fff;
+      border-radius: 0px;
+    }
+  }
+}
+
+.style-one {
+  border: 0;
+  height: 1px;
+  background: #333;
+  background-image: linear-gradient(to right, #ccc, #333, #ccc);
+}
+.modal-backdrop {
+  background-color: #fff;
+  top: 74px;
+  &.show{
+    opacity: 0.9;
+  }
+}
+// Here you can add other styles
+.addnewconnection-list{
+  list-style: none;
+  width: 100%;
+  border-bottom:1px solid  #ccc;
+  &::after{
+      content: '';
+      width: 20px;
+      height: 20px;
+      border-radius: 20px;
+      background-color: #20a8d8;
+      display: inline-block;
+      float: right;
+      margin-top: -10px;
+  }
+  &::before{
+    content: '';
+    width: 20px;
+    height: 20px;
+    border-radius: 20px;
+    background-color: #20a8d8;
+    position: absolute;
+    left: 0px;
+    /* top: 14px; */
+    /* display: inline-block; */
+    /* float: left; */
+    margin-top: -10px;
+}
+  
+  li{
+    
+    a{
+      position: absolute;
+      left: -13%;
+      top: -10px;
+      color: #242424;
+    }
+    
+    width: 48%;
+    float: left;
+    &:last-child{
+      a{
+        margin-left: 12px;
+        right: -8% !important;
+       top: -10px;
+       left:inherit !important;
+      }
+    }
+    
+  }
+}
+
+.hover{
+  &:hover{
+    cursor: pointer;
+  }
+}
+.addconnection-body{
+  padding: 20px 10px;
+  padding-top: 4%;
+}
+.card-primary{
+  border: 1px solid $blue;
+  .custom-card-header {
+    background-color:$blue;
+    border-top: 1px solid $blue;
+    border-bottom: 1px solid $blue;
+    color: #fff;
+    text-align: center;
+    font-weight: 600;
+  }
+}
+
+.connection{
+  margin-top: 2%;
+}

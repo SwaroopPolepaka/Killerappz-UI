@@ -1,0 +1,170 @@
+<div>
+  <div class="row flex-md-row-reverse padding-right-15px">
+    <button type="button" class="btn btn-primary" (click)="openModal(template)">Add New Connection</button>
+  </div>
+  <div class="row margin-top-10px">
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-header h4 mb-0">Connectors</div>
+        <div class="card-block">
+          <div class="row margin-top-10px">
+            <div class="col-md-12">
+              <h3 *ngIf="conectionList.length == 0 " class="text-center">No connections list</h3>
+            </div>
+            <div class="col-md-2 col-sm-4" *ngFor="let connection of conectionList">
+              <div class="card">
+                <div class="card-header">
+                  {{connection.name}}
+                  <a class="pull-right" (click)="editDetails(connection,template)">
+                    <img src="../../../assets/img/cog.png" alt=""> </a>
+
+                </div>
+                <div class="card-body" align="center">
+                  <img [src]="connection.imageUrl" height="auto" width="auto">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="margin-top-10px">
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="card">
+          <div class="card-header h4 mb-0">Connections Overview</div>
+          <div class="card-block">
+            <table class="table table-bordered table-striped table-condensed">
+              <thead>
+                <tr>
+                  <th>Connector</th>
+                  <th>Configured Date</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody *ngFor="let connection of conectionList">
+                <tr>
+                  <td>{{connection.name}}</td>
+                  <td>{{connection.time}}</td>
+                  <td>
+                    <span class="badge badge-success">{{connection.status}}</span>
+                  </td>
+                </tr>
+
+              </tbody>
+            </table>
+            <nav>
+              <ul class="pagination disabled">
+                <li class="page-item">
+                  <a class="page-link">Prev</a>
+                </li>
+                <li class="page-item active">
+                  <a class="page-link">1</a>
+                </li>
+                <li class="page-item">
+                  <a class="page-link">Next</a>
+                </li>
+              </ul>
+            </nav>
+          </div>
+        </div>
+      </div>
+      <!--/col-->
+    </div>
+  </div>
+
+  <ng-template #template>
+    <div class="modal-header">
+      <h4 class=" col-md-10 offset-md-0.5 modal-title pull-left">{{adredt}} Connection</h4>
+      <button *ngIf="state === 'edit'" type="button" class=" close pull-right" aria-label="Delete" (click)="openDialog(dlgtemplate)">
+        <span aria-hidden="true">Delete</span>
+      </button>
+      <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+        <span aria-hidden="true">Cancel</span>
+      </button>
+    </div>
+  <div class="modal-content" style="padding: 2%;">
+    <aw-wizard #awwiz [defaultStepIndex]=step [navigationMode]="free">
+      <aw-wizard-step stepTitle={{title}} awOptionalStep>
+        <div class ="row">
+        <div class="col-md-2" *ngFor="let connection of connectionCardList">
+          <div *ngIf="connection.available==1">
+            <div class="card card-primary" (click)="showDetails(connection)">
+              <div class="card-body" align="center">
+                <img class="responsive" [awGoToStep]="{stepIndex: 1}" (click)=showDetails(connection) [src]="connection.imageUrl" height="100%"
+                  width="100%">
+              </div>
+              <div class="card-header custom-card-header hover" [awGoToStep]="{stepIndex: 1} " (click)=showDetails(connection)>
+                {{connection.connectioncardname}}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      </aw-wizard-step>
+      <aw-wizard-step stepTitle="Enter Details" awOptionalStep>
+        <form [formGroup]="formdata" (ngSubmit)="onClickSubmit(formdata.value)" novalidate>
+          <div class="row">
+            <div class="col-md-8 offset-md-2 text-center">
+                <div *ngIf="err!==null">{{errstr}}</div>
+
+              <div class="form-group row">
+                <label class="col-md-3 col-form-label text-right" for="text-input">Enter Nexpose URL</label>
+                <div class="col-md-7">
+                  <input type="text" class="form-control" placeholder="Enter Nexpose URL" formControlName="np_url" required>
+                  <div *ngIf="formdata.controls.np_url.touched && !formdata.controls.np_url.valid " style="color:  red;font-size: 12px;">Url of server is required</div>
+
+
+                </div>
+              </div>
+              <div class="form-group row">
+                <label class="col-md-3 col-form-label text-right" for="text-input">Username</label>
+                <div class="col-md-7">
+                  <input type="text" formControlName="np_username" class="form-control" placeholder="Your Nexpose Username" required>
+                  <div *ngIf="formdata.controls.np_username.touched && !formdata.controls.np_username.valid " style="color:  red;font-size: 12px;">Username is required</div>
+
+                </div>
+              </div>
+              <div class="form-group row">
+                <label class="col-md-3 col-form-label text-right" for="text-input">Password</label>
+                <div class="col-md-7">
+                  <input type="password" formControlName="np_password" class="form-control" placeholder="Your Nexpose Password" required>
+                  <div *ngIf="formdata.controls.np_password.touched && !formdata.controls.np_password.valid " style="color:  red;font-size: 12px;">Password is required</div>
+
+                </div>
+              </div>
+              <div class="form-group row">
+                <label class="col-md-3 col-form-label text-right" for="text-input">Sync Interval</label>
+                <div class="col-md-7">
+                  <input type="text" formControlName="refresh_rate" class="form-control" placeholder="How frequently do you want us to sync data?"
+                    required>
+                    <div *ngIf="formdata.controls.refresh_rate.touched && !formdata.controls.refresh_rate.valid " style="color:  red;font-size: 12px;">Sync intervel is required</div>
+
+                </div>
+              </div>
+
+
+              <div class="row">
+                <div class="col-md-7 offset-md-3">
+                  <button type="submit" class="btn btn-primary btn-block" [disabled]="!formdata.valid">Submit</button>
+
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </form>
+      </aw-wizard-step>
+    </aw-wizard></div>
+  </ng-template>
+
+  <ng-template #dlgtemplate>
+    <div class="modal-body text-center">
+      <p>Do you want to delete connection?</p>
+      <button type="button" class="btn btn-default" (click)="confirm()">Yes</button>
+      <button type="button" class="btn btn-primary" (click)="decline()">No</button>
+    </div>
+  </ng-template>
+</div>
